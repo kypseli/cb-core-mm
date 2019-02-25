@@ -1,8 +1,7 @@
 antisamy-markup-formatter:1.5
-configuration-as-code:1.5
-configuration-as-code-support:1.5
+configuration-as-code:1.6
+configuration-as-code-support:1.6
 cloudbees-console-log-masker:1.0.3
-cloudbees-workflow-template:2.7
 cloudbees-workflow-ui:2.1
 notification-api:1.1
 operations-center-notification:1.0
@@ -15,12 +14,11 @@ workflow-cps-global-lib:2.9
 workflow-cps-checkpoint:2.7
 momentjs:1.1.1
 handlebars:1.1.1
-cloudbees-template:4.36
 skip-plugin:4.1
 github-oauth:0.31
 aws-credentials:1.23
 artifact-manager-s3:1.1
 aws-global-configuration:1.0
 github-branch-source:2.4.1
-devoptics:1.1617
-slack:2.14
+devoptics:1.1632
+slack:2.18
