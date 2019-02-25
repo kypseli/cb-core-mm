@@ -8,7 +8,7 @@ import java.util.logging.Logger;
 
 
 Logger logger = Logger.getLogger("init_07_pipeline_template_global_catalog.groovy")
-logger.info("BEGIN docker label for pipeline-template-global-catalog")
+logger.info("BEGIN pipeline-template-global-catalog")
 File disableScript = new File(Jenkins.getInstance().getRootDir(), ".disable-pipeline-template-global-catalog-script")
 if (disableScript.exists()) {
     logger.info("DISABLE pipeline-template-global-catalog script")
