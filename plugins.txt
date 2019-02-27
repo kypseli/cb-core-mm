@@ -17,7 +17,7 @@ momentjs:1.1.1
 handlebars:1.1.1
 skip-plugin:4.1
 github-oauth:0.31
-aws-java-sdk:1.10.16
+aws-java-sdk:1.11.457
 aws-credentials:1.23
 artifact-manager-s3:1.1
 aws-global-configuration:1.0
