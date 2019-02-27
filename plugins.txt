@@ -1,6 +1,6 @@
 antisamy-markup-formatter:1.5
-configuration-as-code:1.6
-configuration-as-code-support:1.6
+configuration-as-code:1.7
+configuration-as-code-support:1.7
 cloudbees-console-log-masker:1.0.3
 cloudbees-workflow-ui:2.1
 notification-api:1.1
@@ -23,3 +23,5 @@ github-branch-source:2.4.1
 devoptics:1.1632
 slack:2.18
 scm-api:2.3.0
+script-security:1.5.3
+matrix-project:1.13
