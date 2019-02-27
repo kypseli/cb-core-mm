@@ -74,7 +74,7 @@ credentials:
           name: "github.com"
           description: "GitHub"
         credentials:
-          - secretText:
+          - string:
               scope: GLOBAL
               id: cbdays-github-token-secret
               description: "GitHub PAT for beedemo-ops from JCasC - secret text"
