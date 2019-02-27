@@ -26,3 +26,4 @@ slack:2.18
 scm-api:2.3.0
 script-security:1.53
 matrix-project:1.13
+configuration-as-code-secret-ssm:1.0.0

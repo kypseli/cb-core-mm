@@ -24,7 +24,7 @@ unclassified:
   githubpluginconfig:
     configs:
     - name: "GitHub - Kypseli"
-      credentialsId: "kypseli-github-token"
+      credentialsId: "kypseli-github-token-secret"
       manageHooks: true
   globallibraries:
     libraries:
@@ -40,15 +40,46 @@ unclassified:
 kube:
   podTemplatesConfiguration:
     templates:
-      - name: maven
-        label: mavenpodtemplate
+      - name: jdk10
+        label: jdk10
+        nodeUsageMode: EXCLUSIVE
         containers:
-          - name: maven
-            image: maven:3.3.9-jdk-8-alpine
+          - name: jdk10
+            image: openjdk:10-jdk-slim-sid
             ttyEnabled: true
-            command: cat
-            args: ""
+            command: /bin/sh -c
+            args: "cat"
+      - name: jdk8
+        label: jdk8
+        nodeUsageMode: EXCLUSIVE
+        containers:
+          - name: jdk8
+            image: openjdk:8-jdk-slim
+            ttyEnabled: true
+            command: /bin/sh -c
+            args: "cat"
+      - name: nodejs-app
+        label: nodejs-app
+        nodeUsageMode: EXCLUSIVE
+        containers:
+          - name: nodejs
+            image: node:8.12.0-alpine
+            ttyEnabled: true
+            command: /bin/sh -c
+            args: "cat"
 aws:
   s3:
     container: "kypseli"
     prefix: "cb-core/artifacts/"
+credentials:
+  system:
+    domainCredentials:
+      - domain :
+          name: "github.com"
+          description: "GitHub"
+        credentials:
+          - usernamePassword:
+              scope: GLOBAL
+              id: kypseli-github-token-secret
+              description: "GitHub PAT for beedemo-ops from JCasC"
+              secret: ${github-ops-token}
