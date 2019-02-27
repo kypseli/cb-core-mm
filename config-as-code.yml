@@ -21,6 +21,11 @@ unclassified:
     teamDomain: beedemo-team
     tokenCredentialId: beedemo-slack
     room: "#ci"
+  githubpluginconfig:
+    configs:
+    - name: "GitHub - Kypseli"
+      credentialsId: "kypseli-github-token"
+      manageHooks: true
   globallibraries:
     libraries:
     - defaultVersion: "master"
