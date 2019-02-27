@@ -1,6 +1,7 @@
 antisamy-markup-formatter:1.5
 configuration-as-code:1.7
 configuration-as-code-support:1.7
+cloudbees-template:4.39
 cloudbees-console-log-masker:1.0.3
 cloudbees-workflow-ui:2.1
 notification-api:1.1
@@ -16,6 +17,7 @@ momentjs:1.1.1
 handlebars:1.1.1
 skip-plugin:4.1
 github-oauth:0.31
+aws-java-sdk:1.10.16
 aws-credentials:1.23
 artifact-manager-s3:1.1
 aws-global-configuration:1.0
