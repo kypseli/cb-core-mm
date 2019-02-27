@@ -23,5 +23,5 @@ github-branch-source:2.4.1
 devoptics:1.1632
 slack:2.18
 scm-api:2.3.0
-script-security:1.5.3
+script-security:1.53
 matrix-project:1.13
