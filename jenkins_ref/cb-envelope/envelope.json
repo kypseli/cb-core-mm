@@ -650,7 +650,7 @@
       "name": "Amazon Web Services SDK",
       "groupId": "org.jenkins-ci.plugins",
       "artifactId": "aws-java-sdk",
-      "version": "1.11.403",
+      "version": "1.11.457",
       "dependencies":       {
         "apache-httpcomponents-client-4-api": "4.5.5-3.0",
         "jackson2-api": "2.8.11.2"
