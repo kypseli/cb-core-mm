@@ -16,11 +16,11 @@ if (disableScript.exists()) {
 def jenkins = Jenkins.instance
 Set<String> allowedTypes = new TreeSet <String>()
 def folder = jenkins.getItem(System.properties.'MASTER_NAME')
-folder = jenkins.createProject(Folder.class, "template-jobs")
+def templateFolder = folder.createProject(Folder.class, "template-jobs")
 
 allowedTypes.add("workshopCatalog/nodejs-app")
 def filterProp = new SubItemFilterProperty(allowedTypes)
-folder.getProperties().add(filterProp)
+templateFolder.getProperties().add(filterProp)
 jenkins.save()
 
 
