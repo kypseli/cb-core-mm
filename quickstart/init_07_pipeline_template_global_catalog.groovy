@@ -15,7 +15,7 @@ if (disableScript.exists()) {
     return
 }
 
-SCMSource scm = new org.jenkinsci.plugins.github_branch_source.GitHubSCMSource(null, null, "SAME", "cbdays-github-token", "cloudbees-days", "pipeline-templates")
+SCMSource scm = new org.jenkinsci.plugins.github_branch_source.GitHubSCMSource(null, null, "SAME", "cbdays-github-token", "cloudbees-days", "pipeline-template-catalog")
 GlobalTemplateCatalogManagement m = GlobalTemplateCatalogManagement.get();
 
 TemplateCatalog globalCatalog = new TemplateCatalog(scm, "master");
