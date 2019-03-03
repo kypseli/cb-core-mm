@@ -31,7 +31,7 @@ unclassified:
           scm:
             github:
               credentialsId: "cbdays-github-token"
-              repoOwner: "cloudbeees-days"
+              repoOwner: "cloudbees-days"
               repository: "pipeline-library"
 aws:
   s3:
