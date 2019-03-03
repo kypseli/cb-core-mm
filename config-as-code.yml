@@ -33,6 +33,10 @@ unclassified:
               credentialsId: "cbdays-github-token"
               repoOwner: "cloudbees-days"
               repository: "pipeline-library"
+  slackNotifier:
+    teamDomain: beedemo-team
+    tokenCredentialId: beedemo-slack
+    room: "#ci"
 aws:
   s3:
     container: "cd-accel"
