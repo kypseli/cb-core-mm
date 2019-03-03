@@ -27,4 +27,4 @@ scm-api:2.3.0
 script-security:1.53
 matrix-project:1.13
 configuration-as-code-secret-ssm:1.0.0
-copy-artifact:1.42
+copyartifact:1.42
