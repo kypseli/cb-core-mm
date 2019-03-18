@@ -2,8 +2,8 @@
   "product": "core-mm",
   "version": "2.150.3.2",
   "distribution": "rolling",
-  "revision": 3,
-  "commit": "4a5dbca9440171b5a4ac72fbc5e2c71d070a4f29",
+  "revision": 4,
+  "commit": "4407c3c251e7e9b1878323ab922b70e1e0243221",
   "core": "2.150.3-cb-1",
   "plugins":   {
     "apache-httpcomponents-client-4-api":     {
@@ -204,9 +204,9 @@
       "name": "Script Security Plugin",
       "groupId": "org.jenkins-ci.plugins",
       "artifactId": "script-security",
-      "version": "1.53",
+      "version": "1.54",
       "scope": "bootstrap",
-      "sha1": "PAri9exfFPuJAB7AdpPdsJHasS4=",
+      "sha1": "PeRLqa1OhYEX8kVuwM1S6LUX90Y=",
       "tier": "verified"
     },
     "command-launcher":     {
@@ -259,10 +259,10 @@
       "name": "Pipeline: Step API",
       "groupId": "org.jenkins-ci.plugins.workflow",
       "artifactId": "workflow-step-api",
-      "version": "2.17",
-      "dependencies": {"structs": "1.5"},
+      "version": "2.19",
+      "dependencies": {"structs": "1.17"},
       "scope": "bootstrap",
-      "sha1": "wQvqqmnONFSIv1yhQvIoerPs+Ig=",
+      "sha1": "jerQ9B+K0GnG0qCAD9WqUklOp08=",
       "tier": "compatible"
     },
     "scm-api":     {
@@ -505,15 +505,15 @@
       "name": "Pipeline: Supporting APIs",
       "groupId": "org.jenkins-ci.plugins.workflow",
       "artifactId": "workflow-support",
-      "version": "3.0",
+      "version": "3.2",
       "dependencies":       {
         "scm-api": "2.2.6",
         "script-security": "1.39",
         "workflow-api": "2.30",
-        "workflow-step-api": "2.13"
+        "workflow-step-api": "2.19"
       },
       "scope": "fat",
-      "sha1": "8I3GD4nkAwlsla3Ct38X1jJUIHg=",
+      "sha1": "JM2Nk98xAJ9xY+HJHO0ls02h16Y=",
       "tier": "compatible"
     },
     "workflow-job":     {
@@ -534,13 +534,13 @@
       "name": "Matrix Project Plugin",
       "groupId": "org.jenkins-ci.plugins",
       "artifactId": "matrix-project",
-      "version": "1.13",
+      "version": "1.14",
       "dependencies":       {
         "junit": "1.20",
-        "script-security": "1.13"
+        "script-security": "1.54"
       },
       "scope": "fat",
-      "sha1": "2bGksFUT1UmSOiaMPLmMVSca5Jw=",
+      "sha1": "sBg0X0ORm8L+GwlEpUF6NiHdEkI=",
       "tier": "compatible"
     },
     "unique-id":     {
@@ -650,7 +650,7 @@
       "name": "Amazon Web Services SDK",
       "groupId": "org.jenkins-ci.plugins",
       "artifactId": "aws-java-sdk",
-      "version": "1.11.457",
+      "version": "1.11.403",
       "dependencies":       {
         "apache-httpcomponents-client-4-api": "4.5.5-3.0",
         "jackson2-api": "2.8.11.2"
@@ -835,7 +835,7 @@
       "name": "Pipeline: Groovy",
       "groupId": "org.jenkins-ci.plugins.workflow",
       "artifactId": "workflow-cps",
-      "version": "2.61.1",
+      "version": "2.61.2",
       "dependencies":       {
         "ace-editor": "1.0.1",
         "jquery-detached": "1.2.1",
@@ -849,7 +849,7 @@
       },
       "optionalDependencies": {"support-core": "2.43"},
       "scope": "fat",
-      "sha1": "Q+UbT0ClcfP6wNXTNUAiWx2rm6g=",
+      "sha1": "8r0Je/sdGoi2HOSi/Ywta2HUc2E=",
       "tier": "compatible"
     },
     "branch-api":     {
@@ -2140,12 +2140,12 @@
       "name": "Email Extension Plugin",
       "groupId": "org.jenkins-ci.plugins",
       "artifactId": "email-ext",
-      "version": "2.62",
+      "version": "2.62.1",
       "dependencies":       {
         "junit": "1.2",
         "mailer": "1.13",
         "matrix-project": "1.4",
-        "script-security": "1.27",
+        "script-security": "1.54",
         "structs": "1.6",
         "token-macro": "2.3"
       },
@@ -2156,7 +2156,7 @@
       },
       "otherDependencies": {"analysis-core": "1.54"},
       "scope": "fat",
-      "sha1": "icAmIZrbBA1osf0136Znjr7iwoA=",
+      "sha1": "XrPrV+btLfs6l36JRXb4Sm3BtME=",
       "tier": "compatible"
     },
     "external-monitor-job":     {
@@ -2660,10 +2660,10 @@
     "visual-studio-online"
   ],
   "signature":   {
-    "correct_digest": "j+Q+k/UYn/qeypV8V4aVi1/4T6U=",
+    "correct_digest": "CobhWfbD2DCSzjvJNN3LQrxTjew=",
     "certificates": ["MIIDyjCCArICCQDjhYDxdF9w9jANBgkqhkiG9w0BAQUFADCBpjELMAkGA1UEBhMCVVMxEzARBgNVBAgTCkNhbGlmb3JuaWExETAPBgNVBAcTCFNhbiBKb3NlMRgwFgYDVQQKEw9DbG91ZEJlZXMsIEluYy4xEDAOBgNVBAsTB0plbmtpbnMxGjAYBgNVBAMTEUtvaHN1a2UgS2F3YWd1Y2hpMScwJQYJKoZIhvcNAQkBFhhra2F3YWd1Y2hpQGNsb3VkYmVlcy5jb20wHhcNMTExMDIyMTgzMTM2WhcNMjExMDE5MTgzMTM2WjCBpjELMAkGA1UEBhMCVVMxEzARBgNVBAgTCkNhbGlmb3JuaWExETAPBgNVBAcTCFNhbiBKb3NlMRgwFgYDVQQKEw9DbG91ZEJlZXMsIEluYy4xEDAOBgNVBAsTB0plbmtpbnMxGjAYBgNVBAMTEUtvaHN1a2UgS2F3YWd1Y2hpMScwJQYJKoZIhvcNAQkBFhhra2F3YWd1Y2hpQGNsb3VkYmVlcy5jb20wggEiMA0GCSqGSIb3DQEBAQUAA4IBDwAwggEKAoIBAQDVPr8iuS4BTVjKZ0PvZvfoCkBnNeqVsyjDO5XDdYeGPHbG3D8OIpHZQjgr9IeL+bUF3JEfPS0F0TmNSf0mzrHxGCRsVQcGsDClqFqVnUlG4b9ThcRckYVe+/Wl6DCrGTUI08Ivc7bpnxi+ZxeGtdCGEL6gNyw/t85qs/7JbTbAxXpRs+EWKcC6l8a7N8Uy5xgRxWzPfiF8wuLzrbrJCS0WYV3387eo9RmXqbEVeoAyD7hkcjJb17ZSFv6eJTn0K/Z9i8jmuTqZe6bN/YmP3y4r8tx4z2nx+qFVeJZ7pM7FyRlUAO1qPKjw0pDSGYzoXp3T/1PiBYI09EADQL4dpa5zAgMBAAEwDQYJKoZIhvcNAQEFBQADggEBAKx1keEJnlDHlHCsEEyFdmLxlYJ+6CSlrU9B/pJ7ufUuQJUfCYancmeO+8XSkDzN/3HvpKyWWmUWNlmVvbVnTVxfp3/Y4YshuNfyuP/gXOGoz/ZzQVoq+GJ4gaEr6VZgEv9DCfFQr5HhZQLj1Zc1oQaxB//YrBkw9Yhx7hHSW/qwyrqJEjzA0EEIixNfQm+qdYv4PR1Zzmue9XhGMXpQiymEYo90DJomBPVwVII1OimgIXtDgJQebAxPxvwfhodPNTCxit3zn8Z7I8iMrzHoMA4mk4OJPqwP6Gr4iD8+Fg/xO1T2CxZ4C7gLiQx/OnHCAGxZD2BmGQ9WzzriZ727tl4="],
-    "correct_signature": "q6sQLTFrLFc1k0YhCCBToXWoR2dDmlMvw2VF55uz2uEuObHvvuZy4cLQNc5nR9aOQF1nHOL/dIvkv75VMZHC+4U1xzej/KevHTEBbwMVTg9RzvPfzRN3b0eH9xmafyfQK+eHDdznXl82KJhlrsdQZWX0exXeYs1PFpuCvCMKnQVVzcGjHRSVNgtFOk71mzuCeympiRlIDkznd7OskM3X3uKl7M82JJjYZBJJhs/k+rJs9X2hlg2PK94blo0MTnUUGyHH+mbdw49PYw3tlfiPPgYVFu21eafJIG4FejJqk9v4tUHx1eCipMgkFy6uUk6HhpPP2o9vlZHip/qfvi5csA==",
-    "digest": "DXyQl0LE9lW7Rfpo7dRRfKVdPZw=",
-    "signature": "Cyrs8wKXOuXMVHxstS/dm9W32HNk5N6DBOz2oHDU4A3etO8mYFKrgBzJ89JRFUJymINVHCtniv0qxAPl2EPcVl1VhQDLRqK1Iswa+15nhg8TB/JHTvLS+NcyKYDDzkvfyock89aQ3L3J9fytVS3SgJC1BgZiXXS4ELoL/9dkYfIk/SlA37z4eTgex7PiYJ5BngHJfUlIXI2hVQRSsPQnhKMLUDGHvi921gQqQQJt8oMa0mbo+JCcTyRcXF8C7Pm+yfcNqcRcoUKfSEfP7VJKQsR40/hEDjg0X435sHg6og0o2o07rYj6b4I72AHXjbFYdLNudkzBTGi2nYiDx2e7BA=="
+    "correct_signature": "RnSGlzUArtKpzEZ1HUmgSL3FKyOHV7Dp/U3WP2VsPmcKE/9/o2lkmuYe331AZklBCSgWqxwUgok9H8X2kiVg1NEsY3Jk3yIN7lIJWbcrVwSjS6gqc4kT2aCGjrLMQtsb2lmI7p7jBEz6PjvvKJOJmFatoz7PiUVPTrRUu/Uq8I4ajQ6LYO7yHXZYYmLG+EZCECKIIDkpGnqXGpH1opzLzfFt1VJc+ld4ZDLCzXwJowv01SHOJwgOyjjHVHWni1FdmTvXAhuaaQSIcwKfsRZQUbsIIk33UFmN3aE3BuSeAP2WsF/rS2GvjE0d4SzlKucp8JIQqrl1rVqrq5l2QkHBDQ==",
+    "digest": "YjAW7GFjNXe5LXpaTBX2UX1dF0E=",
+    "signature": "fVIryOK5NHc0F+5wsWAJWjBFAt76sJ2N1+0KX2q4s4DxiiLsTmhWTDtK2HM0610ck84iS6VzpZLgpEUDEi3ndY4zi2ICDnusjDGxbfa73LstvFieZ0nT7FICmNSRy02xZtQSzKtWBQIMD2KSSvLs39EtNKDg5/wEborNww6NsBp6ap2+ygdYjM4txBmu6KEq546JlOiPbgt83o6xfBpjb29oErjNpDsRMrbXcQjQYhiwczN0/Z7N+0/SJl3MQiy47OH99/AphDAQZ450ZlyGx5vnQlSQ9B7JxVELGOAkIYPPBeR6bTFxRXzPoJkDpH0Ycw43w8X6GLgLVYpS36aqXw=="
   }
 }
