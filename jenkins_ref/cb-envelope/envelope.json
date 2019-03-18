@@ -1947,7 +1947,7 @@
       "name": "CloudBees Pipeline: Templates Plugin",
       "groupId": "com.cloudbees.jenkins.plugins.workflow",
       "artifactId": "cloudbees-workflow-template",
-      "version": "3.0-SNAPSHOT",
+      "version": "2.7",
       "dependencies":       {
         "cloudbees-folder": "5.13",
         "cloudbees-template": "4.26",
