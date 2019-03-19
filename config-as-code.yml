@@ -44,6 +44,15 @@ aws:
 kube:
   podTemplatesConfiguration:
     templates:
+      - name: nodejs-app
+        label: nodejs-app
+        nodeUsageMode: EXCLUSIVE
+        containers:
+          - name: nodejs
+            image: node:8.12.0-alpine
+            ttyEnabled: true
+            command: /bin/sh -c
+            args: "cat"
       - name: jdk10
         label: jdk10
         nodeUsageMode: EXCLUSIVE
@@ -59,15 +68,6 @@ kube:
         containers:
           - name: jdk8
             image: openjdk:8-jdk-slim
-            ttyEnabled: true
-            command: /bin/sh -c
-            args: "cat"
-      - name: nodejs-app
-        label: nodejs-app
-        nodeUsageMode: EXCLUSIVE
-        containers:
-          - name: nodejs
-            image: node:8.12.0-alpine
             ttyEnabled: true
             command: /bin/sh -c
             args: "cat"
