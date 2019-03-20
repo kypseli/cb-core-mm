@@ -1,8 +1,8 @@
-FROM cloudbees/cloudbees-core-mm:2.150.3.2
+FROM cloudbees/cloudbees-core-mm:2.164.1.2
 
 LABEL maintainer "kmadel@cloudbees.com"
 
-USER root
+USER jenkins
 
 #skip setup wizard and disable CLI
 ENV JVM_OPTS -Djenkins.CLI.disabled=true -server
@@ -30,4 +30,3 @@ COPY install-plugins.sh /usr/local/bin/install-plugins.sh
 
 RUN /usr/local/bin/install-plugins.sh $(cat plugins.txt)
 
-USER jenkins
