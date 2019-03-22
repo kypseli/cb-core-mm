@@ -15,7 +15,7 @@ if (disableScript.exists()) {
     return
 }
 
-SCMSource scm = new org.jenkinsci.plugins.github_branch_source.GitHubSCMSource(null, null, "SAME", "kypseli-github-token", "kypseli", "pipeline-templates")
+SCMSource scm = new org.jenkinsci.plugins.github_branch_source.GitHubSCMSource(null, null, "SAME", "kypseli-github-token-secret", "kypseli", "pipeline-templates")
 GlobalTemplateCatalogManagement m = GlobalTemplateCatalogManagement.get();
 
 TemplateCatalog globalCatalog = new TemplateCatalog(scm, "master");
