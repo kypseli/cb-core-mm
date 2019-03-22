@@ -80,6 +80,7 @@ credentials:
         credentials:
           - usernamePassword:
               scope: GLOBAL
-              id: kypseli-github-token-secret
+              id: kypseli-github-token
               description: "GitHub PAT for beedemo-ops from JCasC"
-              secret: ${github-ops-token}
+              username: beedemo-ops
+              password: ${github-ops-token}
