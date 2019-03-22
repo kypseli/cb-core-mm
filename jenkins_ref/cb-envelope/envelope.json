@@ -2,6 +2,7 @@
   "product": "core-mm",
   "version": "2.164.1.2",
   "distribution": "rolling",
+  "revision": 2,
   "commit": "c64f2026589a82fbd392e3a0e4c450f59ecadb41",
   "core": "2.164.1-cb-1",
   "plugins":   {
