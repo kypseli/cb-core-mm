@@ -4,6 +4,7 @@ configuration-as-code-support:1.8
 cloudbees-template:4.39
 cloudbees-console-log-masker:1.0.3
 cloudbees-workflow-ui:2.1
+workflow-cps-checkpoint:2.7
 notification-api:1.1
 operations-center-notification:1.0
 pipeline-event-step:1.3
