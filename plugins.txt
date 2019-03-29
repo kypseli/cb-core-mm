@@ -16,8 +16,8 @@ handlebars:1.1.1
 skip-plugin:4.2
 github-oauth:0.31
 aws-credentials:1.24
-artifact-manager-s3:1.1
-aws-global-configuration:1.1
+artifact-manager-s3:1.2
+aws-global-configuration:1.2
 github-branch-source:2.4.1
 devoptics:1.1632
 slack:2.20
@@ -25,3 +25,5 @@ configuration-as-code-secret-ssm:1.0.0
 copyartifact:1.41
 script-security:1.56
 workflow-cps:2.65
+workflow-cps-checkpoint:2.7
+
