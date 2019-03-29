@@ -20,6 +20,8 @@ artifact-manager-s3:1.1
 aws-global-configuration:1.1
 github-branch-source:2.4.1
 devoptics:1.1632
-slack:2.19
+slack:2.20
 configuration-as-code-secret-ssm:1.0.0
 copyartifact:1.41
+script-security:1.56
+workflow-cps:2.65
