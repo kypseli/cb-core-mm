@@ -21,6 +21,7 @@ COPY config-as-code.yml /usr/share/jenkins/config-as-code.yml
 ENV CASC_JENKINS_CONFIG /usr/share/jenkins/config-as-code.yml
 
 COPY ./jenkins_ref /usr/share/jenkins/ref
+COPY ./plugins/* /usr/share/jenkins/ref/plugins/
 
 #install suggested and additional plugins
 ENV JENKINS_UC http://jenkins-updates.cloudbees.com
