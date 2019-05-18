@@ -17,18 +17,75 @@ unclassified:
     artifactManagerFactories:
       - jclouds:
           provider: s3
+  githubpluginconfig:
+    configs:
+    - name: "GitHub - CloudBees Days"
+      credentialsId: "cbdays-github-token-secret"
+      manageHooks: true
   globallibraries:
     libraries:
     - defaultVersion: "master"
-      name: "kypseli"
+      name: "cb-days"
       retriever:
         modernSCM:
           scm:
             github:
-              credentialsId: "kypseli-github-token"
-              repoOwner: "kypseli"
+              credentialsId: "cbdays-github-token"
+              repoOwner: "cloudbees-days"
               repository: "pipeline-library"
+  slackNotifier:
+    teamDomain: beedemo-team
+    tokenCredentialId: beedemo-slack
+    room: "#ci"
 aws:
   s3:
-    container: "kypseli"
+    container: "cd-accel"
     prefix: "cb-core/artifacts/"
+kube:
+  podTemplatesConfiguration:
+    templates:
+      - name: nodejs-app
+        label: nodejs-app
+        nodeUsageMode: EXCLUSIVE
+        containers:
+          - name: nodejs
+            image: node:8.12.0-alpine
+            ttyEnabled: true
+            command: /bin/sh -c
+            args: "cat"
+      - name: jdk10
+        label: jdk10
+        nodeUsageMode: EXCLUSIVE
+        containers:
+          - name: jdk10
+            image: openjdk:10-jdk-slim-sid
+            ttyEnabled: true
+            command: /bin/sh -c
+            args: "cat"
+      - name: jdk8
+        label: jdk8
+        nodeUsageMode: EXCLUSIVE
+        containers:
+          - name: jdk8
+            image: openjdk:8-jdk-slim
+            ttyEnabled: true
+            command: /bin/sh -c
+            args: "cat"
+credentials:
+  system:
+    domainCredentials:
+      - domain :
+          name: "github.com"
+          description: "GitHub"
+        credentials:
+          - string:
+              scope: GLOBAL
+              id: cbdays-github-token-secret
+              description: "GitHub PAT for beedemo-ops from JCasC - secret text"
+              secret: ${github-ops-token}
+          - usernamePassword:
+              scope: GLOBAL
+              id: cbdays-github-token
+              description: "GitHub PAT for beedemo-ops from JCasC"
+              username: beedemo-ops
+              password: ${github-ops-token}

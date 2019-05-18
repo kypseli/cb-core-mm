@@ -1,4 +1,4 @@
-FROM cloudbees/cloudbees-core-mm:2.150.2.3
+FROM cloudbees/cloudbees-core-mm:2.164.3.2
 
 LABEL maintainer "kmadel@cloudbees.com"
 
@@ -24,6 +24,8 @@ ENV JENKINS_UC http://jenkins-updates.cloudbees.com
 COPY config-as-code.yml /usr/share/jenkins/config-as-code.yml
 ENV CASC_JENKINS_CONFIG /usr/share/jenkins/config-as-code.yml
 
+COPY ./jenkins_ref /usr/share/jenkins/ref
+
 #install suggested and additional plugins
 ENV JENKINS_UC http://jenkins-updates.cloudbees.com
 ENV TRY_UPGRADE_IF_NO_MARKER=true
@@ -38,3 +40,5 @@ COPY plugins.txt plugins.txt
 COPY jenkins-support /usr/local/bin/jenkins-support
 COPY install-plugins.sh /usr/local/bin/install-plugins.sh
 RUN /usr/local/bin/install-plugins.sh $(cat plugins.txt)
+
+user jenkins
