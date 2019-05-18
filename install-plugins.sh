@@ -62,12 +62,28 @@ doDownload() {
         return 0
     fi
 
-    JENKINS_UC_DOWNLOAD=${JENKINS_UC_DOWNLOAD:-"$JENKINS_UC/download"}
-
-    url="$JENKINS_UC_DOWNLOAD/plugins/$plugin/$version/${plugin}.hpi"
+    if [[ "$version" == "latest" && -n "$JENKINS_UC_LATEST" ]]; then
+        # If version-specific Update Center is available, which is the case for LTS versions,
+        # use it to resolve latest versions.
+        url="$JENKINS_UC_LATEST/latest/${plugin}.hpi"
+    elif [[ "$version" == "experimental" && -n "$JENKINS_UC_EXPERIMENTAL" ]]; then
+        # Download from the experimental update center
+        url="$JENKINS_UC_EXPERIMENTAL/latest/${plugin}.hpi"
+    elif [[ "$version" == incrementals* ]] ; then
+        # Download from Incrementals repo: https://jenkins.io/blog/2018/05/15/incremental-deployment/
+        # Example URL: https://repo.jenkins-ci.org/incrementals/org/jenkins-ci/plugins/workflow/workflow-support/2.19-rc289.d09828a05a74/workflow-support-2.19-rc289.d09828a05a74.hpi
+        local groupId incrementalsVersion
+        arrIN=("${version//;/ }")
+        groupId=${arrIN[1]}
+        incrementalsVersion=${arrIN[2]}
+        url="${JENKINS_INCREMENTALS_REPO_MIRROR}/$(echo "${groupId}" | tr '.' '/')/${plugin}/${incrementalsVersion}/${plugin}-${incrementalsVersion}.hpi"
+    else
+        JENKINS_UC_DOWNLOAD=${JENKINS_UC_DOWNLOAD:-"$JENKINS_UC/download"}
+        url="$JENKINS_UC_DOWNLOAD/plugins/$plugin/$version/${plugin}.hpi"
+    fi
 
     echo "Downloading plugin: $plugin from $url"
-    curl --connect-timeout ${CURL_CONNECTION_TIMEOUT:-20} --retry ${CURL_RETRY:-5} --retry-delay ${CURL_RETRY_DELAY:-0} --retry-max-time ${CURL_RETRY_MAX_TIME:-60} -s -f -L "$url" -o "$jpi"
+    retry_command curl "${CURL_OPTIONS:--sSfL}" --connect-timeout "${CURL_CONNECTION_TIMEOUT:-20}" --retry "${CURL_RETRY:-3}" --retry-delay "${CURL_RETRY_DELAY:-0}" --retry-max-time "${CURL_RETRY_MAX_TIME:-60}" "$url" -o "$jpi"
     return $?
 }
 
@@ -103,7 +119,7 @@ resolveDependencies() {
             echo "Skipping optional dependency $plugin"
         else
             local pluginInstalled
-            if pluginInstalled="$(echo "${bundledPlugins}" | grep "^${plugin}:")"; then
+            if pluginInstalled="$(echo -e "${bundledPlugins}\n${installedPlugins}" | grep "^${plugin}:")"; then
                 pluginInstalled="${pluginInstalled//[$'\r']}"
                 local versionInstalled; versionInstalled=$(versionFromPlugin "${pluginInstalled}")
                 local minVersion; minVersion=$(versionFromPlugin "${d}")
@@ -111,7 +127,7 @@ resolveDependencies() {
                     echo "Upgrading bundled dependency $d ($minVersion > $versionInstalled)"
                     download "$plugin" &
                 else
-                    echo "Skipping already bundled dependency $d ($minVersion <= $versionInstalled)"
+                    echo "Skipping already installed dependency $d ($minVersion <= $versionInstalled)"
                 fi
             else
                 download "$plugin" &
@@ -126,13 +142,13 @@ bundledPlugins() {
     if [ -f $JENKINS_WAR ]
     then
         TEMP_PLUGIN_DIR=/tmp/plugintemp.$$
-        for i in $(jar tf $JENKINS_WAR | egrep '[^detached-]plugins.*\..pi' | sort)
+        for i in $(jar tf $JENKINS_WAR | grep -E '[^detached-]plugins.*\..pi' | sort)
         do
             rm -fr $TEMP_PLUGIN_DIR
             mkdir -p $TEMP_PLUGIN_DIR
             PLUGIN=$(basename "$i"|cut -f1 -d'.')
             (cd $TEMP_PLUGIN_DIR;jar xf "$JENKINS_WAR" "$i";jar xvf "$TEMP_PLUGIN_DIR/$i" META-INF/MANIFEST.MF >/dev/null 2>&1)
-            VER=$(egrep -i Plugin-Version "$TEMP_PLUGIN_DIR/META-INF/MANIFEST.MF"|cut -d: -f2|sed 's/ //')
+            VER=$(grep -E -i Plugin-Version "$TEMP_PLUGIN_DIR/META-INF/MANIFEST.MF"|cut -d: -f2|sed 's/ //')
             echo "$PLUGIN:$VER"
         done
         rm -fr $TEMP_PLUGIN_DIR
@@ -159,30 +175,74 @@ installedPlugins() {
     done
 }
 
+jenkinsMajorMinorVersion() {
+    local JENKINS_WAR
+    JENKINS_WAR=/usr/share/jenkins/jenkins.war
+    if [[ -f "$JENKINS_WAR" ]]; then
+        local version major minor
+        version="$(java -jar $JENKINS_WAR --version)"
+        major="$(echo "$version" | cut -d '.' -f 1)"
+        minor="$(echo "$version" | cut -d '.' -f 2)"
+        echo "$major.$minor"
+    else
+        echo "ERROR file not found: $JENKINS_WAR"
+        return 1
+    fi
+}
+
 main() {
-    local plugin version
+    local plugin pluginVersion jenkinsVersion
+    local plugins=()
 
     mkdir -p "$REF_DIR" || exit 1
+    rm -f "$FAILED"
+
+    # Read plugins from stdin or from the command line arguments
+    if [[ ($# -eq 0) ]]; then
+        while read -r line || [ "$line" != "" ]; do
+            # Remove leading/trailing spaces, comments, and empty lines
+            plugin=$(echo "${line}" | tr -d '\r' | sed -e 's/^[ \t]*//g' -e 's/[ \t]*$//g' -e 's/[ \t]*#.*$//g' -e '/^[ \t]*$/d')
+
+            # Avoid adding empty plugin into array
+            if [ ${#plugin} -ne 0 ]; then
+                plugins+=("${plugin}")
+            fi
+        done
+    else
+        plugins=("$@")
+    fi
 
     # Create lockfile manually before first run to make sure any explicit version set is used.
     echo "Creating initial locks..."
-    for plugin in "$@"; do
+    for plugin in "${plugins[@]}"; do
         mkdir "$(getLockFile "${plugin%%:*}")"
     done
 
     echo "Analyzing war..."
     bundledPlugins="$(bundledPlugins)"
 
+    echo "Registering preinstalled plugins..."
+    installedPlugins="$(installedPlugins)"
+
+    # Check if there's a version-specific update center, which is the case for LTS versions
+    jenkinsVersion="$(jenkinsMajorMinorVersion)"
+    if curl -fsL -o /dev/null "$JENKINS_UC/$jenkinsVersion"; then
+        JENKINS_UC_LATEST="$JENKINS_UC/$jenkinsVersion"
+        echo "Using version-specific update center: $JENKINS_UC_LATEST..."
+    else
+        JENKINS_UC_LATEST=
+    fi
+
     echo "Downloading plugins..."
-    for plugin in "$@"; do
-        version=""
+    for plugin in "${plugins[@]}"; do
+        pluginVersion=""
 
         if [[ $plugin =~ .*:.* ]]; then
-            version=$(versionFromPlugin "${plugin}")
+            pluginVersion=$(versionFromPlugin "${plugin}")
             plugin="${plugin%%:*}"
         fi
 
-        download "$plugin" "$version" "true" &
+        download "$plugin" "$pluginVersion" "true" &
     done
     wait
 
@@ -199,7 +259,9 @@ main() {
     fi
 
     echo "Cleaning up locks"
-    #rm -r "$REF_DIR"/*.lock
+    find "$REF_DIR" -regex ".*.lock" | while read -r filepath; do
+        rm -r "$filepath"
+    done
 }
 
 main "$@"

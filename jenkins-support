@@ -54,30 +54,26 @@ copy_reference_file() {
         image_version=$(get_plugin_version "${f}")
         if [[ -e $JENKINS_HOME/${version_marker} ]]; then
             marker_version=$(cat "$JENKINS_HOME/${version_marker}")
-            if versionLT "$marker_version" "$container_version"; then
+            if [[ "$image_version" == "$container_version" ]]; then
                 action="SKIPPED"
-                reason="Installed version ($container_version) has been manually upgraded from initial version ($marker_version)"
                 log=true
+                reason="Version from image is the same as the installed version $image_version"
             else
-                if [[ "$image_version" == "$container_version" ]]; then
+                if versionLT "$image_version" "$container_version"; then
                     action="SKIPPED"
-                    reason="Version from image is the same as the installed version $image_version"
+                    log=true
+                    reason="Image version ($image_version) is older than installed version ($container_version)"
                 else
-                    if versionLT "$image_version" "$container_version"; then
-                        action="SKIPPED"
-                        log=true
-                        reason="Image version ($image_version) is older than installed version ($container_version)"
-                    else
-                        action="UPGRADED"
-                        log=true
-                        reason="Image version ($image_version) is newer than installed version ($container_version)"
-                    fi
+                    action="UPGRADED"
+                    log=true
+                    reason="Image version ($image_version) is newer than installed version ($container_version)"
                 fi
             fi
         else
             if [[ -n "$TRY_UPGRADE_IF_NO_MARKER" ]]; then
                 if [[ "$image_version" == "$container_version" ]]; then
                     action="SKIPPED"
+                    log=true
                     reason="Version from image is the same as the installed version $image_version (no marker found)"
                     # Add marker for next time
                     echo "$image_version" > "$JENKINS_HOME/${version_marker}"
@@ -98,13 +94,15 @@ copy_reference_file() {
             action=${action:-"INSTALLED"}
             log=true
             mkdir -p "$JENKINS_HOME/${dir:23}"
-            cp -r "${f}" "$JENKINS_HOME/${rel}";
+            cp -pr "${f}" "$JENKINS_HOME/${rel}";
             # pin plugins on initial copy
             touch "$JENKINS_HOME/${rel}.pinned"
             echo "$image_version" > "$JENKINS_HOME/${version_marker}"
             reason=${reason:-$image_version}
         else
             action=${action:-"SKIPPED"}
+            log=true
+            reason="no upgrade or override"
         fi
     else
         if [[ ! -e $JENKINS_HOME/${rel} || $f = *.override ]]
@@ -112,16 +110,66 @@ copy_reference_file() {
             action="INSTALLED"
             log=true
             mkdir -p "$JENKINS_HOME/${dir:23}"
-            cp -r "${f}" "$JENKINS_HOME/${rel}";
+            cp -pr "$(realpath "${f}")" "$JENKINS_HOME/${rel}";
         else
             action="SKIPPED"
+            log=true
+            reason="no upgrade"
         fi
     fi
     if [[ -n "$VERBOSE" || "$log" == "true" ]]; then
         if [ -z "$reason" ]; then
-            echo "$action $rel" >> "$COPY_REFERENCE_FILE_LOG"
+            echo "$action $rel test" >> "$COPY_REFERENCE_FILE_LOG"
         else
-            echo "$action $rel : $reason" >> "$COPY_REFERENCE_FILE_LOG"
+            echo "$action $rel : $reason test" >> "$COPY_REFERENCE_FILE_LOG"
         fi
     fi
+}
+
+# Retries a command a configurable number of times with backoff.
+#
+# The retry count is given by ATTEMPTS (default 60), the initial backoff
+# timeout is given by TIMEOUT in seconds (default 1.)
+#
+function retry_command() {
+  local max_attempts=${ATTEMPTS-3}
+  local timeout=${TIMEOUT-1}
+  local success_timeout=${SUCCESS_TIMEOUT-1}
+  local max_success_attempt=${SUCCESS_ATTEMPTS-1}
+  local attempt=0
+  local success_attempt=0
+  local exitCode=0
+
+  while (( attempt < max_attempts ))
+  do
+    set +e
+    "$@"
+    exitCode=$?
+    set -e
+
+    if [[ $exitCode == 0 ]]
+    then
+      success_attempt=$(( success_attempt + 1 ))
+      if (( success_attempt >= max_success_attempt))
+      then
+        break
+      else
+        sleep "$success_timeout"
+        continue
+      fi
+    fi
+
+    echo "$(date -u '+%T') Failure ($exitCode) Retrying in $timeout seconds..." 1>&2
+    sleep "$timeout"
+    success_attempt=0
+    attempt=$(( attempt + 1 ))
+    timeout=$(( timeout ))
+  done
+
+  if [[ $exitCode != 0 ]]
+  then
+    echo "$(date -u '+%T') Failed in the last attempt ($*)" 1>&2
+  fi
+
+  return $exitCode
 }

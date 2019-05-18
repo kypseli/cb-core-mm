@@ -26,4 +26,3 @@ copyartifact:1.41
 script-security:1.56
 workflow-cps:2.65
 workflow-cps-checkpoint:2.7
-
